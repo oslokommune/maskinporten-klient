@@ -1,0 +1,87 @@
+package no.kommune.oslo.redusertoppholdsbetaling.integrasjoner.maskinporten
+
+import com.nimbusds.jwt.JWTParser
+import com.nimbusds.jwt.SignedJWT
+import no.kommune.oslo.redusertoppholdsbetaling.integrasjoner.maskinporten.util.MaskinportenTestUtils
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import java.io.FileNotFoundException
+
+internal class MaskinportenJWTGeneratorTest {
+
+
+
+    lateinit var maskinportenJWTGenerator: MaskinportenJWTGenerator
+
+    @BeforeEach
+    fun setup() {
+        val maskinportenKonfigurasjon = MaskinportenKonfigurasjon(
+            MaskinportenTestUtils.issuer,
+            MaskinportenTestUtils.audience,
+            MaskinportenTestUtils.tokenEndpoint,
+            MaskinportenTestUtils.consumer_org,
+            MaskinportenTestUtils.keyId,
+            MaskinportenTestUtils.keystoreFilePath,
+            MaskinportenTestUtils.keystorePassord,
+            MaskinportenTestUtils.keystoreAlias,
+            MaskinportenTestUtils.keystoreAliasPassword
+        )
+        maskinportenJWTGenerator = MaskinportenJWTGenerator(maskinportenKonfigurasjon)
+    }
+
+    @Test
+    fun `MaskinportenJWTGenerator genererer signedJWT gitt påkrevde parametre`() {
+        val tokenBase64 =
+            maskinportenJWTGenerator.genererMaskinportenJWT(setOf("test", "test1", "test2"))
+        Assertions.assertNotNull(tokenBase64)
+        val parsedToken = JWTParser.parse(tokenBase64)
+        Assertions.assertTrue(parsedToken is SignedJWT,"Forventet SignedJWT")
+
+    }
+
+    @Test
+    fun `MaskinportenJWTGenerator generer token med angitte verdier`(){
+        //TODO: Legg inn verifisering på claims
+        val token = maskinportenJWTGenerator.genererMaskinportenJWT(setOf("test", "test1", "test2"))
+        val parsed = JWTParser.parse(token)
+        val payload = parsed.jwtClaimsSet
+        val toJSONObject = payload.toJSONObject()
+        println(toJSONObject)
+
+    }
+
+    @Test
+    fun `Maskinporten konfigurasjon feiler dersom påkrevde felter mangler`() {
+        Assertions.assertThrows(IllegalArgumentException::class.java, {
+            val mangledeParameter = MaskinportenKonfigurasjon(
+                "",
+                "",
+                "abbababa",
+                "949345323",
+                "key123",
+                "ingenfilher.txt",
+                "password",
+                "selfsigned",
+                "password"
+            )
+        }, "Forventet IllegalArgumentException ved ikke oppfylte paramtre i konfigurasjonen")
+    }
+
+    @Test
+    fun `Maskinporten konfigurasjon feiler dersom keystore ikke finnes på angitt path`() {
+        Assertions.assertThrows(FileNotFoundException::class.java, {
+            val feilendeKeystore = MaskinportenKonfigurasjon(
+                "testiss",
+                "testaud",
+                "abbababa",
+                "949345323",
+                "key123",
+                "ingenfilher.txt",
+                "password",
+                "selfsigned",
+                "password"
+            )
+        }, "Forventet FileNotFoundException ved manglende Keystore")
+    }
+}
