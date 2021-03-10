@@ -14,14 +14,11 @@ java {
     withSourcesJar()
 }
 
-group = "no.kommune.oslo.automatiserteprosesser"
-version = "1.0"
-
 publishing {
     publications {
         create<MavenPublication>("maven") {
-            groupId = "automatiserteprosesser"
-            artifactId = "maskinporten"
+            groupId = "no.kommune.oslo.automatiserteprosesser"
+            artifactId = "maskinporten-klient"
             version = "1.0"
 
             from(components["java"])
