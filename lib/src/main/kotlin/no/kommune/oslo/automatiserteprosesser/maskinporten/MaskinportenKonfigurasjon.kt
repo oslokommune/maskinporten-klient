@@ -1,6 +1,5 @@
-package no.kommune.oslo.redusertoppholdsbetaling.integrasjoner.maskinporten
+package no.kommune.oslo.automatiserteprosesser.maskinporten
 
-import no.kommune.oslo.redusertoppholdsbetaling.integrasjoner.maskinportenHttpClient.MaskinportenKonfigurasjonLoader
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.File
@@ -27,28 +26,24 @@ class MaskinportenKonfigurasjon(val issuer : String,
 ) {
 
     init {
-        if(issuer.isNullOrEmpty() || audience.isNullOrEmpty() || tokenEndpoint.isNullOrEmpty()
-            || consumerOrganization.isNullOrEmpty() || keystoreFilepath.isNullOrEmpty()
-            || keystorePassword.isNullOrEmpty() ||keystoreAlias.isNullOrEmpty()
-            ||keystoreAliasPassword.isNullOrEmpty()){
-            throw IllegalArgumentException("MaskinportenKonfig mangler påkrevde konfigurasjonsverdier")
-        }
+        check(issuer.isNotEmpty())
+        check(audience.isNotEmpty())
+        check(tokenEndpoint.isNotEmpty())
+        check(consumerOrganization.isNotEmpty())
+        check(keystoreFilepath.isNotEmpty())
+        check(keystorePassword.isNotEmpty())
+        check(keystoreAlias.isNotEmpty())
+        check(keystoreAliasPassword.isNotEmpty())
         if(!File(keystoreFilepath).exists()){
             throw FileNotFoundException("Keystore ikke tilgjengelig på angitt filbane: ${keystoreFilepath}")
         }
     }
 
-    val certificate: X509Certificate by lazy { loadCertificate() }
     val privateKey: PrivateKey by lazy { loadPrivateKey() }
 
     private fun loadPrivateKey(): PrivateKey {
         val keyStore = getLoadedKeystore()
         return keyStore.getKey(keystoreAlias, keystoreAliasPassword.toCharArray()) as PrivateKey
-    }
-
-    private fun loadCertificate(): X509Certificate {
-        val keyStore = getLoadedKeystore()
-        return keyStore.getCertificate(keystoreAlias) as X509Certificate
     }
 
     private fun getLoadedKeystore(): KeyStore {
@@ -73,7 +68,7 @@ class MaskinportenKonfigurasjon(val issuer : String,
     }
 
     companion object {
-        private val log: Logger = LoggerFactory.getLogger(MaskinportenKonfigurasjonLoader::class.java)
+        private val log: Logger = LoggerFactory.getLogger(MaskinportenKonfigurasjon::class.java)
     }
 
 }

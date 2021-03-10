@@ -1,15 +1,13 @@
-package no.kommune.oslo.redusertoppholdsbetaling.integrasjoner.maskinporten
+package no.kommune.oslo.automatiserteprosesser.maskinporten
 
 import com.nimbusds.jose.JWSAlgorithm
 import com.nimbusds.jose.JWSHeader
 import com.nimbusds.jose.crypto.RSASSASigner
-import com.nimbusds.jose.util.Base64
 import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.security.PrivateKey
-import java.security.cert.X509Certificate
 import java.time.Clock
 import java.util.*
 
@@ -18,7 +16,7 @@ class MaskinportenJWTGenerator(val konfigurasjon : MaskinportenKonfigurasjon) {
 
     fun genererMaskinportenJWT(scopes: Set<String>): String {
         val signedJWT = SignedJWT(
-            jwsHeader(konfigurasjon.certificate),
+            jwsHeader(konfigurasjon.keyId),
             claims(konfigurasjon, scopes)
         )
         signedJWT.sign(jwsSigner(konfigurasjon.privateKey))
@@ -41,10 +39,9 @@ class MaskinportenJWTGenerator(val konfigurasjon : MaskinportenKonfigurasjon) {
         return claims
     }
 
-    private fun jwsHeader(certificate : X509Certificate): JWSHeader {
+    private fun jwsHeader(keyId : String): JWSHeader {
         val jwsHeader = JWSHeader.Builder(JWSAlgorithm.RS256)
-            //.x509CertChain(listOf(Base64.encode(certificate.encoded))) // For å legge til x5c-element i JWT
-            .keyID(konfigurasjon.keyId)
+            .keyID(keyId)
             .build()
         return jwsHeader
     }

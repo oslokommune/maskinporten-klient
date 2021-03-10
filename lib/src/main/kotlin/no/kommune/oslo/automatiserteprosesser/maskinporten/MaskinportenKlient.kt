@@ -1,4 +1,4 @@
-package no.kommune.oslo.redusertoppholdsbetaling.integrasjoner.maskinporten
+package no.kommune.oslo.automatiserteprosesser.maskinporten
 
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.JsonMappingException
@@ -8,7 +8,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.http.HttpHeaders
 
 class MaskinportenKlient(
     val maskinportenKonfigurasjon: MaskinportenKonfigurasjon
@@ -26,8 +25,8 @@ class MaskinportenKlient(
             .build()
 
         val request = Request.Builder()
-            .header(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
-            .header(HttpHeaders.ACCEPT, "*/*")
+            .header("Content-Type", "application/x-www-form-urlencoded")
+            .header("Accept", "*/*")
             .url(maskinportenKonfigurasjon.tokenEndpoint)
             .post(formBody)
             .build()

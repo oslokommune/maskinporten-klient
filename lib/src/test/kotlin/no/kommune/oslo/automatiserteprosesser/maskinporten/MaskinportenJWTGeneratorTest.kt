@@ -1,16 +1,14 @@
-package no.kommune.oslo.redusertoppholdsbetaling.integrasjoner.maskinporten
+package no.kommune.oslo.automatiserteprosesser.maskinporten
 
 import com.nimbusds.jwt.JWTParser
 import com.nimbusds.jwt.SignedJWT
-import no.kommune.oslo.redusertoppholdsbetaling.integrasjoner.maskinporten.util.MaskinportenTestUtils
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+
 import java.io.FileNotFoundException
 
-internal class MaskinportenJWTGeneratorTest {
-
-
+class MaskinportenJWTGeneratorTest {
 
     lateinit var maskinportenJWTGenerator: MaskinportenJWTGenerator
 
@@ -53,7 +51,7 @@ internal class MaskinportenJWTGeneratorTest {
 
     @Test
     fun `Maskinporten konfigurasjon feiler dersom påkrevde felter mangler`() {
-        Assertions.assertThrows(IllegalArgumentException::class.java, {
+        Assertions.assertThrows(IllegalStateException::class.java, {
             val mangledeParameter = MaskinportenKonfigurasjon(
                 "",
                 "",
