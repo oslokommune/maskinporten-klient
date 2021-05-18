@@ -6,12 +6,10 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
 import java.io.InputStream
-import java.lang.IllegalArgumentException
 import java.security.KeyStore
 import java.security.NoSuchAlgorithmException
 import java.security.PrivateKey
 import java.security.cert.CertificateException
-import java.security.cert.X509Certificate
 
 class MaskinportenKonfigurasjon(val issuer : String,
                                 val audience : String,
@@ -43,6 +41,11 @@ class MaskinportenKonfigurasjon(val issuer : String,
 
     private fun loadPrivateKey(): PrivateKey {
         val keyStore = getLoadedKeystore()
+        log.debug("Keystore provider: ${keyStore.provider}")
+        log.debug("Keystore type: ${keyStore.type}")
+        log.debug("Aliases found in keystore: ${keyStore.aliases().toList()}")
+        log.debug("Is $keystoreAlias found in keystore?: ${keyStore.isKeyEntry(keystoreAlias)}")
+
         return keyStore.getKey(keystoreAlias, keystoreAliasPassword.toCharArray()) as PrivateKey
     }
 
