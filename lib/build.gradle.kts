@@ -1,7 +1,7 @@
 
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.4.21"
-    id("com.adarshr.test-logger") version "2.1.1"
+    id("com.adarshr.test-logger") version "3.0.0"
     id("maven-publish")
 
 
