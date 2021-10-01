@@ -45,7 +45,7 @@ repositories {
 dependencies {
 
     implementation(group = "com.nimbusds", name = "nimbus-jose-jwt", version = "9.0")
-    implementation(group = "com.squareup.okhttp3", name = "okhttp", version = "4.9.1")
+    implementation(group = "com.squareup.okhttp3", name = "okhttp", version = "4.9.2")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.0")
     implementation(group = "org.slf4j", name = "slf4j-api", version = "1.7.32")
 
