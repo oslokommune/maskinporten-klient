@@ -20,7 +20,7 @@ class MaskinportenKonfigurasjon(val issuer : String,
                                 val keystorePassword : String,
                                 val keystoreAlias : String,
                                 val keystoreAliasPassword : String,
-                                val keystoreType: KeystoreType
+                                val keystoreType: KeystoreType = KeystoreType.JKS
 
 ) {
 
