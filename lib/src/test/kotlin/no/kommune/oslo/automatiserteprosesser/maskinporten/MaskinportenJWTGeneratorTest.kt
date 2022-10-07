@@ -23,7 +23,8 @@ class MaskinportenJWTGeneratorTest {
             MaskinportenTestUtils.keystoreFilePath,
             MaskinportenTestUtils.keystorePassord,
             MaskinportenTestUtils.keystoreAlias,
-            MaskinportenTestUtils.keystoreAliasPassword
+            MaskinportenTestUtils.keystoreAliasPassword,
+            KeystoreType.JKS
         )
         maskinportenJWTGenerator = MaskinportenJWTGenerator(maskinportenKonfigurasjon)
     }
@@ -34,12 +35,12 @@ class MaskinportenJWTGeneratorTest {
             maskinportenJWTGenerator.genererMaskinportenJWT(setOf("test", "test1", "test2"))
         Assertions.assertNotNull(tokenBase64)
         val parsedToken = JWTParser.parse(tokenBase64)
-        Assertions.assertTrue(parsedToken is SignedJWT,"Forventet SignedJWT")
+        Assertions.assertTrue(parsedToken is SignedJWT, "Forventet SignedJWT")
 
     }
 
     @Test
-    fun `MaskinportenJWTGenerator generer token med angitte verdier`(){
+    fun `MaskinportenJWTGenerator generer token med angitte verdier`() {
         //TODO: Legg inn verifisering på claims
         val token = maskinportenJWTGenerator.genererMaskinportenJWT(setOf("test", "test1", "test2"))
         val parsed = JWTParser.parse(token)
@@ -61,7 +62,8 @@ class MaskinportenJWTGeneratorTest {
                 "ingenfilher.txt",
                 "password",
                 "selfsigned",
-                "password"
+                "password",
+                KeystoreType.JKS
             )
         }, "Forventet IllegalArgumentException ved ikke oppfylte paramtre i konfigurasjonen")
     }
@@ -78,7 +80,8 @@ class MaskinportenJWTGeneratorTest {
                 "ingenfilher.txt",
                 "password",
                 "selfsigned",
-                "password"
+                "password",
+                KeystoreType.JKS
             )
         }, "Forventet FileNotFoundException ved manglende Keystore")
     }
