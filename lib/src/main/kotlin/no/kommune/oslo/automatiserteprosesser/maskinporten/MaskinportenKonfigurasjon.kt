@@ -19,7 +19,8 @@ class MaskinportenKonfigurasjon(val issuer : String,
                                 val keystoreFilepath : String,
                                 val keystorePassword : String,
                                 val keystoreAlias : String,
-                                val keystoreAliasPassword : String
+                                val keystoreAliasPassword : String,
+                                val keystoreType: KeystoreType = KeystoreType.JKS
 
 ) {
 
@@ -52,7 +53,7 @@ class MaskinportenKonfigurasjon(val issuer : String,
     private fun getLoadedKeystore(): KeyStore {
         try {
             val inputStream: InputStream = File(keystoreFilepath).inputStream()
-            val keyStore = KeyStore.getInstance("JKS")
+            val keyStore = KeyStore.getInstance(keystoreType.storeValue)
             keyStore.load(inputStream, keystorePassword.toCharArray())
             return keyStore
         } catch (ex: Exception){
@@ -76,3 +77,7 @@ class MaskinportenKonfigurasjon(val issuer : String,
 
 }
 
+enum class KeystoreType(val storeValue: String) {
+    JKS("JKS"),
+    P12("pkcs12")
+}
