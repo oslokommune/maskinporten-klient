@@ -5,6 +5,7 @@ import com.nimbusds.jwt.SignedJWT
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import software.amazon.awssdk.regions.Region
 
 import java.io.FileNotFoundException
 
@@ -14,7 +15,7 @@ class MaskinportenJWTGeneratorTest {
 
     @BeforeEach
     fun setup() {
-        val maskinportenKonfigurasjon = MaskinportenKonfigurasjon(
+        val maskinportenKonfigurasjon = MaskinportenFileKeystoreKonfigurasjon(
             MaskinportenTestUtils.issuer,
             MaskinportenTestUtils.audience,
             MaskinportenTestUtils.tokenEndpoint,
@@ -51,9 +52,9 @@ class MaskinportenJWTGeneratorTest {
     }
 
     @Test
-    fun `Maskinporten konfigurasjon feiler dersom påkrevde felter mangler`() {
+    fun `Maskinporten konfigurasjon feiler dersom påkrevde felter mangler - keystore som fil`() {
         Assertions.assertThrows(IllegalStateException::class.java, {
-            val mangledeParameter = MaskinportenKonfigurasjon(
+            val mangledeParameter = MaskinportenFileKeystoreKonfigurasjon(
                 "",
                 "",
                 "abbababa",
@@ -68,10 +69,24 @@ class MaskinportenJWTGeneratorTest {
         }, "Forventet IllegalArgumentException ved ikke oppfylte paramtre i konfigurasjonen")
     }
 
+
+    @Test
+    fun `Maskinporten konfigurasjon feiler dersom påkrevde felter mangler - keystore fra parameter store`() {
+        Assertions.assertThrows(IllegalStateException::class.java, {
+            val mangledeParameter = MaskinportenAwsSsmKonfigurasjon(
+                "",
+                "",
+                "abbababa",
+                "949345323",
+                Region.EU_NORTH_1,
+            )
+        }, "Forventet IllegalArgumentException ved ikke oppfylte paramtre i konfigurasjonen")
+    }
+
     @Test
     fun `Maskinporten konfigurasjon feiler dersom keystore ikke finnes på angitt path`() {
         Assertions.assertThrows(FileNotFoundException::class.java, {
-            val feilendeKeystore = MaskinportenKonfigurasjon(
+            val feilendeKeystore = MaskinportenFileKeystoreKonfigurasjon(
                 "testiss",
                 "testaud",
                 "abbababa",
