@@ -16,8 +16,7 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "no.kommune.oslo.automatiserteprosesser"
             artifactId = "maskinporten-klient"
-            version = "TEST"
-
+            version = "1.3"
             from(components["java"])
         }
     }
