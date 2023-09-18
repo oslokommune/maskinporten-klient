@@ -43,7 +43,7 @@ class MaskinportenKlient(
                 return jacksonObjectMapper().readValue(resp, MaskinportenTokenWrapper::class.java)
             } catch (ex: Exception){
                 when(ex) {
-                    is JsonProcessingException, is JsonMappingException -> {
+                    is JsonProcessingException -> {
                         log.error("Kunne ikke prosessere response {}: {}", ex.message, ex.stackTrace)
                         throw ex
                     }

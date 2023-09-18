@@ -1,6 +1,6 @@
 
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.4.21"
+    kotlin("jvm") version "1.9.10"
     id("com.adarshr.test-logger") version "3.0.0"
     id("maven-publish")
 
@@ -10,16 +10,13 @@ plugins {
     `maven-publish`
 }
 
-java {
-    withSourcesJar()
-}
 
 publishing {
     publications {
         create<MavenPublication>("maven") {
             groupId = "no.kommune.oslo.automatiserteprosesser"
             artifactId = "maskinporten-klient"
-            version = "1.3"
+            version = "TEST"
 
             from(components["java"])
         }
@@ -38,7 +35,6 @@ publishing {
 }
 
 repositories {
-    jcenter()
     mavenCentral()
 }
 
@@ -61,14 +57,8 @@ dependencies {
     // Use the Kotlin test library.
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.2")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions {
-        jvmTarget = "11"
-    }
-}
 
 tasks.withType<Test> {
     useJUnitPlatform()

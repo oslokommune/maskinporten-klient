@@ -8,4 +8,3 @@
  */
 
 rootProject.name = "maskinporten-klient"
-include("lib")
