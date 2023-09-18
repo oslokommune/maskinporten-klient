@@ -1,4 +1,4 @@
-package no.kommune.oslo.automatiserteprosesser.maskinporten
+package no.kommune.oslo.origo.maskinporten
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -11,18 +11,18 @@ import java.security.NoSuchAlgorithmException
 import java.security.PrivateKey
 import java.security.cert.CertificateException
 
-class MaskinportenKonfigurasjon(val issuer : String,
-                                val audience : String,
-                                val tokenEndpoint : String,
-                                val consumerOrganization : String,
-                                val keyId : String,
-                                val keystoreFilepath : String,
-                                val keystorePassword : String,
-                                val keystoreAlias : String,
-                                val keystoreAliasPassword : String,
-                                val keystoreType: KeystoreType = KeystoreType.JKS
+class MaskinportenFileKeystoreKonfigurasjon(override val issuer : String,
+                                            override val audience : String,
+                                            override val tokenEndpoint : String,
+                                            override val consumerOrganization : String,
+                                            override val keyId: String,
+                                            val keystoreFilepath : String,
+                                            val keystorePassword : String,
+                                            val keystoreAlias : String,
+                                            val keystoreAliasPassword : String,
+                                            val keystoreType: KeystoreType = KeystoreType.JKS
 
-) {
+) : MaskinportenKonfigurasjon {
 
     init {
         check(issuer.isNotEmpty())
@@ -38,7 +38,7 @@ class MaskinportenKonfigurasjon(val issuer : String,
         }
     }
 
-    val privateKey: PrivateKey by lazy { loadPrivateKey() }
+    override val privateKey: PrivateKey by lazy { loadPrivateKey() }
 
     private fun loadPrivateKey(): PrivateKey {
         val keyStore = getLoadedKeystore()
@@ -58,12 +58,12 @@ class MaskinportenKonfigurasjon(val issuer : String,
             return keyStore
         } catch (ex: Exception){
             when(ex) {
-                is IOException, is NoSuchAlgorithmException, is CertificateException -> {
-                    log.error("Kunne ikke håndtere keystore for maskinporten: {}", ex.stackTrace)
-                    throw ex
-                }
                 is FileNotFoundException, is SecurityException -> {
                     log.error("Kunne ikke finne eller lese keystore: {}", ex.stackTrace)
+                    throw ex
+                }
+                is IOException, is NoSuchAlgorithmException, is CertificateException -> {
+                    log.error("Kunne ikke håndtere keystore for maskinporten: {}", ex.stackTrace)
                     throw ex
                 }
                 else -> throw ex
@@ -75,9 +75,4 @@ class MaskinportenKonfigurasjon(val issuer : String,
         private val log: Logger = LoggerFactory.getLogger(MaskinportenKonfigurasjon::class.java)
     }
 
-}
-
-enum class KeystoreType(val storeValue: String) {
-    JKS("JKS"),
-    P12("pkcs12")
 }

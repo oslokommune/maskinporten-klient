@@ -1,4 +1,4 @@
-package no.kommune.oslo.automatiserteprosesser.maskinporten
+package no.kommune.oslo.origo.maskinporten
 
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.JsonMappingException
@@ -61,3 +61,11 @@ class MaskinportenKlient(
     }
 
 }
+
+data class MaskinportenTokenWrapper(val access_token: String,
+                                    val token_type: String,
+                                    val expires_in: String,
+                                    val scope: String )
+
+class MaskinportenKlientException(message: String) : Exception(message)
+
