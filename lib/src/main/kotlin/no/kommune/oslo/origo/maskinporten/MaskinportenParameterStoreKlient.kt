@@ -1,4 +1,4 @@
-package no.kommune.oslo.automatiserteprosesser.maskinporten
+package no.kommune.oslo.origo.maskinporten
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import software.amazon.awssdk.regions.Region
@@ -27,7 +27,3 @@ class MaskinportenParameterStoreKlient(region: Region): Closeable {
     }
 }
 
-data class OkdataKeyProperties(@JsonProperty("key_id") val keyId: String,
-                               @JsonProperty("keystore") val keystoreAsByte64: String,
-                               @JsonProperty("key_alias") val keyAlias: String,
-                               @JsonProperty("key_password") val keyPassword: String)

@@ -1,5 +1,6 @@
-package no.kommune.oslo.automatiserteprosesser.maskinporten
+package no.kommune.oslo.origo.maskinporten
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.nimbusds.jose.util.Base64
 import org.slf4j.Logger
@@ -83,3 +84,9 @@ class MaskinportenAwsSsmKonfigurasjon(override val issuer : String,
     }
 
 }
+
+
+data class OkdataKeyProperties(@JsonProperty("key_id") val keyId: String,
+                               @JsonProperty("keystore") val keystoreAsByte64: String,
+                               @JsonProperty("key_alias") val keyAlias: String,
+                               @JsonProperty("key_password") val keyPassword: String)

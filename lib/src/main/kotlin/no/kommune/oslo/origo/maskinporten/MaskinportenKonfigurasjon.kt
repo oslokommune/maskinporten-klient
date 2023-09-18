@@ -1,4 +1,4 @@
-package no.kommune.oslo.automatiserteprosesser.maskinporten
+package no.kommune.oslo.origo.maskinporten
 
 import java.security.PrivateKey
 

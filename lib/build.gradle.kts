@@ -1,6 +1,6 @@
 
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.5.0"
+    id("org.jetbrains.kotlin.jvm") version "1.9.10"
     id("com.adarshr.test-logger") version "3.0.0"
     id("maven-publish")
 
@@ -19,7 +19,7 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "no.kommune.oslo.automatiserteprosesser"
             artifactId = "maskinporten-klient"
-            version = "1.4-snapshot"
+            version = "1.4"
 
             from(components["java"])
         }
@@ -62,12 +62,11 @@ dependencies {
     // Use the Kotlin test library.
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.2")
-//    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
 }
 

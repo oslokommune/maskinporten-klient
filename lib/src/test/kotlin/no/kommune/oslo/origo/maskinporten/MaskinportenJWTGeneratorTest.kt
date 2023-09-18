@@ -1,4 +1,4 @@
-package no.kommune.oslo.automatiserteprosesser.maskinporten
+package no.kommune.oslo.origo.maskinporten
 
 import com.nimbusds.jwt.JWTParser
 import com.nimbusds.jwt.SignedJWT
