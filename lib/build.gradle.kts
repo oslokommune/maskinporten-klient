@@ -17,7 +17,7 @@ java {
 publishing {
     publications {
         create<MavenPublication>("maven") {
-            groupId = "no.kommune.oslo.automatiserteprosesser"
+            groupId = "no.kommune.oslo.origo"
             artifactId = "maskinporten-klient"
             version = "1.4"
 
@@ -38,7 +38,6 @@ publishing {
 }
 
 repositories {
-    jcenter()
     mavenCentral()
 }
 
@@ -48,7 +47,7 @@ dependencies {
     implementation(group = "com.squareup.okhttp3", name = "okhttp", version = "4.10.0")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.2")
     implementation(group = "org.slf4j", name = "slf4j-api", version = "2.0.6")
-    implementation(group = "software.amazon.awssdk", name = "ssm", version = "2.20.22")
+    implementation(group = "software.amazon.awssdk", name = "ssm", version = "2.20.123")
 
 
 

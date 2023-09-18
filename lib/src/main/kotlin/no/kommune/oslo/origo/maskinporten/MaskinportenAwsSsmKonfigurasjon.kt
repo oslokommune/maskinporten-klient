@@ -13,11 +13,12 @@ import java.security.NoSuchAlgorithmException
 import java.security.PrivateKey
 import java.security.cert.CertificateException
 
-class MaskinportenAwsSsmKonfigurasjon(override val issuer : String,
-                                override val audience : String,
-                                override val tokenEndpoint : String,
-                                override val consumerOrganization : String,
-                                awsRegion : Region
+class MaskinportenAwsSsmKonfigurasjon(
+    override val issuer: String,
+    override val audience: String,
+    override val tokenEndpoint: String,
+    override val consumerOrganization: String,
+    awsRegion: Region
 
 ) : MaskinportenKonfigurasjon {
 
@@ -41,7 +42,6 @@ class MaskinportenAwsSsmKonfigurasjon(override val issuer : String,
     override val keyId: String by lazy { keyProperties.keyId }
 
 
-
     private fun loadPrivateKey(): PrivateKey {
         val keyStore = getLoadedKeystore(keyProperties)
         log.debug("Keystore provider: ${keyStore.provider}")
@@ -58,16 +58,18 @@ class MaskinportenAwsSsmKonfigurasjon(override val issuer : String,
             val keyStore = KeyStore.getInstance(KeystoreType.P12.storeValue)
             keyStore.load(inputStream, keyProperties.keyPassword.toCharArray())
             return keyStore
-        } catch (ex: Exception){
-            when(ex) {
+        } catch (ex: Exception) {
+            when (ex) {
                 is IOException, is NoSuchAlgorithmException, is CertificateException -> {
                     log.error("Kunne ikke håndtere keystore for maskinporten: {}", ex.stackTrace)
                     throw ex
                 }
+
                 is SecurityException -> {
                     log.error("Kunne ikke finne eller lese keystore: {}", ex.stackTrace)
                     throw ex
                 }
+
                 else -> throw ex
             }
         }
@@ -86,7 +88,10 @@ class MaskinportenAwsSsmKonfigurasjon(override val issuer : String,
 }
 
 
-data class OkdataKeyProperties(@JsonProperty("key_id") val keyId: String,
-                               @JsonProperty("keystore") val keystoreAsByte64: String,
-                               @JsonProperty("key_alias") val keyAlias: String,
-                               @JsonProperty("key_password") val keyPassword: String)
+data class OkdataKeyProperties(
+    @JsonProperty("key_id") val keyId: String,
+    @JsonProperty("keystore") val keystoreAsByte64: String,
+    @JsonProperty("key_alias") val keyAlias: String,
+    @JsonProperty("key_password") val keyPassword: String,
+    @JsonProperty("key_expiry") val keyExpiry: String
+)
