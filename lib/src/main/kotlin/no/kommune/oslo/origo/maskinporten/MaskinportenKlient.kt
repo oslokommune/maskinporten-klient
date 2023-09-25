@@ -33,17 +33,20 @@ class MaskinportenKlient(
 
         log.debug("Henter token fra maskinporten..")
         client.newCall(request).execute().use { response ->
+            try {
             if (!response.isSuccessful) {
                 val resp = response.body?.string()
                 log.warn("Feilet mot maskinporten [{}]: {}", response.code, resp)
-                throw MaskinportenKlientException("Unexpected code $response")
+                val error = jacksonObjectMapper().readValue(resp, MaskinportenError::class.java)
+                throw MaskinportenKlientException("Unexpected code $response. $error ")
             }
-            try {
+
                 val resp = response.body?.string()
                 return jacksonObjectMapper().readValue(resp, MaskinportenTokenWrapper::class.java)
             } catch (ex: Exception){
                 when(ex) {
-                    is JsonProcessingException, is JsonMappingException -> {
+                    is JsonProcessingException -> {
+                        response.body?.string()
                         log.error("Kunne ikke prosessere response {}: {}", ex.message, ex.stackTrace)
                         throw ex
                     }
@@ -67,5 +70,8 @@ data class MaskinportenTokenWrapper(val access_token: String,
                                     val expires_in: String,
                                     val scope: String )
 
-class MaskinportenKlientException(message: String) : Exception(message)
+data class MaskinportenError(val error: String,
+                             val error_description: String)
+
+class MaskinportenKlientException(error: String) : Exception(error)
 
