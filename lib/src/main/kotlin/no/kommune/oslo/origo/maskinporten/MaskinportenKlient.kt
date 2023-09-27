@@ -1,7 +1,6 @@
 package no.kommune.oslo.origo.maskinporten
 
 import com.fasterxml.jackson.core.JsonProcessingException
-import com.fasterxml.jackson.databind.JsonMappingException
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import okhttp3.FormBody
 import okhttp3.OkHttpClient
@@ -38,9 +37,16 @@ class MaskinportenKlient(
                 val resp = response.body?.string()
                 log.warn("Feilet mot maskinporten [{}]: {}", response.code, resp)
                 val error = jacksonObjectMapper().readValue(resp, MaskinportenError::class.java)
-                throw MaskinportenKlientException("Unexpected code $response. $error ")
-            }
 
+                if(error.error_description.contains("Unknown key identifier", true)){
+                    throw UkjentKidForKlientException("[${error.error}]: ${error.error_description}")
+                } else if(error.error_description.contains("Expired key", true)){
+                    throw UtgåttNøkkelForKlientException("[${error.error}]: ${error.error_description}")
+                }
+
+                throw MaskinportenKlientException("[${error.error}]: ${error.error_description}")
+
+            }
                 val resp = response.body?.string()
                 return jacksonObjectMapper().readValue(resp, MaskinportenTokenWrapper::class.java)
             } catch (ex: Exception){
@@ -73,5 +79,7 @@ data class MaskinportenTokenWrapper(val access_token: String,
 data class MaskinportenError(val error: String,
                              val error_description: String)
 
-class MaskinportenKlientException(error: String) : Exception(error)
+open class MaskinportenKlientException(error: String) : Exception(error)
+class UkjentKidForKlientException(error: String) : MaskinportenKlientException(error)
+class UtgåttNøkkelForKlientException(error: String) : MaskinportenKlientException(error)
 
