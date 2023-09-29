@@ -11,18 +11,18 @@ import java.security.NoSuchAlgorithmException
 import java.security.PrivateKey
 import java.security.cert.CertificateException
 
-class MaskinportenFileKeystoreKonfigurasjon(override val issuer : String,
-                                            override val audience : String,
-                                            override val tokenEndpoint : String,
-                                            override val consumerOrganization : String,
-                                            override val keyId: String,
-                                            val keystoreFilepath : String,
-                                            val keystorePassword : String,
-                                            val keystoreAlias : String,
-                                            val keystoreAliasPassword : String,
-                                            val keystoreType: KeystoreType = KeystoreType.JKS
-
-) : MaskinportenKonfigurasjon {
+class MaskinportenFileKeystoreKonfigurasjon(
+    override val issuer: String,
+    override val audience: String,
+    override val tokenEndpoint: String,
+    override val consumerOrganization: String,
+    override val keyId: String,
+    val keystoreFilepath: String,
+    val keystorePassword: String,
+    val keystoreAlias: String,
+    val keystoreAliasPassword: String,
+    val keystoreType: KeystoreType = KeystoreType.JKS,
+    ) : MaskinportenKonfigurasjon {
 
     init {
         check(issuer.isNotEmpty())
@@ -33,7 +33,7 @@ class MaskinportenFileKeystoreKonfigurasjon(override val issuer : String,
         check(keystorePassword.isNotEmpty())
         check(keystoreAlias.isNotEmpty())
         check(keystoreAliasPassword.isNotEmpty())
-        if(!File(keystoreFilepath).exists()){
+        if (!File(keystoreFilepath).exists()) {
             throw FileNotFoundException("Keystore ikke tilgjengelig på angitt filbane: ${keystoreFilepath}")
         }
     }
@@ -56,16 +56,18 @@ class MaskinportenFileKeystoreKonfigurasjon(override val issuer : String,
             val keyStore = KeyStore.getInstance(keystoreType.storeValue)
             keyStore.load(inputStream, keystorePassword.toCharArray())
             return keyStore
-        } catch (ex: Exception){
-            when(ex) {
+        } catch (ex: Exception) {
+            when (ex) {
                 is FileNotFoundException, is SecurityException -> {
                     log.error("Kunne ikke finne eller lese keystore: {}", ex.stackTrace)
                     throw ex
                 }
+
                 is IOException, is NoSuchAlgorithmException, is CertificateException -> {
                     log.error("Kunne ikke håndtere keystore for maskinporten: {}", ex.stackTrace)
                     throw ex
                 }
+
                 else -> throw ex
             }
         }

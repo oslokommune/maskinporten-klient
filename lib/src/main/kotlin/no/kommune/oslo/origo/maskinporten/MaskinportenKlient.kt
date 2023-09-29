@@ -1,7 +1,6 @@
 package no.kommune.oslo.origo.maskinporten
 
 import com.fasterxml.jackson.core.JsonProcessingException
-import com.fasterxml.jackson.databind.JsonMappingException
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import okhttp3.FormBody
 import okhttp3.OkHttpClient
@@ -33,17 +32,27 @@ class MaskinportenKlient(
 
         log.debug("Henter token fra maskinporten..")
         client.newCall(request).execute().use { response ->
+            try {
             if (!response.isSuccessful) {
                 val resp = response.body?.string()
                 log.warn("Feilet mot maskinporten [{}]: {}", response.code, resp)
-                throw MaskinportenKlientException("Unexpected code $response")
+                val error = jacksonObjectMapper().readValue(resp, MaskinportenError::class.java)
+
+                if(error.error_description.contains("Unknown key identifier", true)){
+                    throw UkjentKidForKlientException("[${error.error}]: ${error.error_description}")
+                } else if(error.error_description.contains("Expired key", true)){
+                    throw UtgåttNøkkelForKlientException("[${error.error}]: ${error.error_description}")
+                }
+
+                throw MaskinportenKlientException("[${error.error}]: ${error.error_description}")
+
             }
-            try {
                 val resp = response.body?.string()
                 return jacksonObjectMapper().readValue(resp, MaskinportenTokenWrapper::class.java)
             } catch (ex: Exception){
                 when(ex) {
-                    is JsonProcessingException, is JsonMappingException -> {
+                    is JsonProcessingException -> {
+                        response.body?.string()
                         log.error("Kunne ikke prosessere response {}: {}", ex.message, ex.stackTrace)
                         throw ex
                     }
@@ -67,5 +76,10 @@ data class MaskinportenTokenWrapper(val access_token: String,
                                     val expires_in: String,
                                     val scope: String )
 
-class MaskinportenKlientException(message: String) : Exception(message)
+data class MaskinportenError(val error: String,
+                             val error_description: String)
+
+open class MaskinportenKlientException(error: String) : Exception(error)
+class UkjentKidForKlientException(error: String) : MaskinportenKlientException(error)
+class UtgåttNøkkelForKlientException(error: String) : MaskinportenKlientException(error)
 
