@@ -19,7 +19,7 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "no.kommune.oslo.origo"
             artifactId = "maskinporten-klient"
-            version = "1.6"
+            version = "1.5"
 
             from(components["java"])
         }
