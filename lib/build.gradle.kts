@@ -60,7 +60,7 @@ dependencies {
 
     // Use the Kotlin test library.
     testImplementation("org.jetbrains.kotlin:kotlin-test")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.7.2")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
     testImplementation("com.squareup.okhttp3:mockwebserver:4.11.0")
 
 }
