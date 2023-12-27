@@ -47,7 +47,7 @@ dependencies {
     implementation(group = "com.squareup.okhttp3", name = "okhttp", version = "4.11.0")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.2")
     implementation(group = "org.slf4j", name = "slf4j-api", version = "2.0.6")
-    implementation(group = "software.amazon.awssdk", name = "ssm", version = "2.20.123")
+    implementation(group = "software.amazon.awssdk", name = "ssm", version = "2.22.6")
 
 
 
