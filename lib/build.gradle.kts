@@ -1,7 +1,6 @@
 
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.9.10"
-    id("com.adarshr.test-logger") version "3.0.0"
     id("maven-publish")
 
 
@@ -19,7 +18,7 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "no.kommune.oslo.origo"
             artifactId = "maskinporten-klient"
-            version = "1.5.1"
+            version = "1.5.2-SNAPSHOT"
 
             from(components["java"])
         }
@@ -43,13 +42,11 @@ repositories {
 
 dependencies {
 
-    implementation(group = "com.nimbusds", name = "nimbus-jose-jwt", version = "9.35")
-    implementation(group = "com.squareup.okhttp3", name = "okhttp", version = "4.11.0")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.2")
-    implementation(group = "org.slf4j", name = "slf4j-api", version = "2.0.6")
-    implementation(group = "software.amazon.awssdk", name = "ssm", version = "2.20.123")
-
-
+    implementation(group = "com.nimbusds", name = "nimbus-jose-jwt", version = "10.0.1")
+    implementation(group = "com.squareup.okhttp3", name = "okhttp", version = "4.12.0")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.18.2")
+    implementation(group = "org.slf4j", name = "slf4j-api", version = "2.0.16")
+    implementation(group = "software.amazon.awssdk", name = "ssm", version = "2.30.2")
 
 
     // Align versions of all Kotlin components
@@ -60,7 +57,7 @@ dependencies {
 
     // Use the Kotlin test library.
     testImplementation("org.jetbrains.kotlin:kotlin-test")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.11.4")
     testImplementation("com.squareup.okhttp3:mockwebserver:4.11.0")
 
 }
@@ -73,8 +70,4 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
-}
-
-testlogger {
-    this.theme = com.adarshr.gradle.testlogger.theme.ThemeType.MOCHA
 }
