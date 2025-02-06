@@ -1,8 +1,15 @@
+val nimbusJoseJwtVersion = "10.0.1"
+val okhttpVersion = "4.12.0"
+val jacksonModuleKotlinVersion = "2.18.2"
+val slf4jApiVersion = "2.0.16"
+val awsSdkSsmVersion = "2.30.2"
+val kotlinBomVersion = "1.9.10"
+val junitJupiterVersion = "5.11.4"
+val mockWebServerVersion = "4.11.0"
 
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.9.10"
     id("maven-publish")
-
 
     // Apply the java-library plugin for API and implementation separation.
     `java-library`
@@ -41,25 +48,22 @@ repositories {
 }
 
 dependencies {
-
-    implementation(group = "com.nimbusds", name = "nimbus-jose-jwt", version = "10.0.1")
-    implementation(group = "com.squareup.okhttp3", name = "okhttp", version = "4.12.0")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.18.2")
-    implementation(group = "org.slf4j", name = "slf4j-api", version = "2.0.16")
-    implementation(group = "software.amazon.awssdk", name = "ssm", version = "2.30.2")
-
+    implementation(group = "com.nimbusds", name = "nimbus-jose-jwt", version = nimbusJoseJwtVersion)
+    implementation(group = "com.squareup.okhttp3", name = "okhttp", version = okhttpVersion)
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonModuleKotlinVersion")
+    implementation(group = "org.slf4j", name = "slf4j-api", version = slf4jApiVersion)
+    implementation(group = "software.amazon.awssdk", name = "ssm", version = awsSdkSsmVersion)
 
     // Align versions of all Kotlin components
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:$kotlinBomVersion"))
 
     // Use the Kotlin JDK 8 standard library.
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
     // Use the Kotlin test library.
     testImplementation("org.jetbrains.kotlin:kotlin-test")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.11.4")
-    testImplementation("com.squareup.okhttp3:mockwebserver:4.11.0")
-
+    testImplementation("org.junit.jupiter:junit-jupiter:$junitJupiterVersion")
+    testImplementation("com.squareup.okhttp3:mockwebserver:$mockWebServerVersion")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
