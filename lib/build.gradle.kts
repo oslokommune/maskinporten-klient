@@ -3,9 +3,9 @@ val okhttpVersion = "4.12.0"
 val jacksonModuleKotlinVersion = "2.18.2"
 val slf4jApiVersion = "2.0.16"
 val awsSdkSsmVersion = "2.30.13"
-val kotlinBomVersion = "1.9.10"
+val kotlinBomVersion = "1.9.25"
 val junitJupiterVersion = "5.11.4"
-val mockWebServerVersion = "4.11.0"
+val mockWebServerVersion = "4.12.0"
 
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.9.10"
