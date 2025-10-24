@@ -4,7 +4,7 @@ val jacksonModuleKotlinVersion = "2.18.3"
 val slf4jApiVersion = "2.0.16"
 val awsSdkSsmVersion = "2.30.14"
 val kotlinBomVersion = "2.1.20"
-val junitJupiterVersion = "5.12.2"
+val junitJupiterVersion = "6.0.0"
 val junitPlatformLauncher = "1.12.2"
 val mockWebServerVersion = "4.12.0"
 
