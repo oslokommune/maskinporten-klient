@@ -1,6 +1,6 @@
 val nimbusJoseJwtVersion = "10.0.1"
 val okhttpVersion = "4.12.0"
-val jacksonModuleKotlinVersion = "2.18.3"
+val jacksonModuleKotlinVersion = "2.20.0"
 val slf4jApiVersion = "2.0.16"
 val awsSdkSsmVersion = "2.30.14"
 val kotlinBomVersion = "2.1.20"
