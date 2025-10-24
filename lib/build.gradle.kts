@@ -9,7 +9,7 @@ val junitPlatformLauncher = "1.12.2"
 val mockWebServerVersion = "4.12.0"
 
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "2.1.20"
+    id("org.jetbrains.kotlin.jvm") version "2.2.21"
     id("maven-publish")
 
     // Apply the java-library plugin for API and implementation separation.
