@@ -4,7 +4,9 @@ val jacksonModuleKotlinVersion = "2.18.2"
 val slf4jApiVersion = "2.0.16"
 val awsSdkSsmVersion = "2.30.14"
 val kotlinBomVersion = "1.9.25"
-val junitJupiterVersion = "5.11.4"
+//val kotlinBomVersion = "2.1.20"
+val junitJupiterVersion = "5.12.2"
+val junitPlatformLauncher = "1.12.2"
 val mockWebServerVersion = "4.12.0"
 
 plugins {
@@ -64,6 +66,7 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.junit.jupiter:junit-jupiter:$junitJupiterVersion")
     testImplementation("com.squareup.okhttp3:mockwebserver:$mockWebServerVersion")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:$junitPlatformLauncher")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
