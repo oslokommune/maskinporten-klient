@@ -5,7 +5,7 @@ val slf4jApiVersion = "2.0.16"
 val awsSdkSsmVersion = "2.30.14"
 val kotlinBomVersion = "2.1.20"
 val junitJupiterVersion = "5.12.2"
-val junitPlatformLauncher = "1.12.2"
+val junitPlatformLauncher = "6.0.0"
 val mockWebServerVersion = "4.12.0"
 
 plugins {
