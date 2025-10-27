@@ -6,7 +6,7 @@ val awsSdkSsmVersion = "2.30.14"
 val kotlinBomVersion = "2.1.20"
 val junitJupiterVersion = "5.12.2"
 val junitPlatformLauncher = "1.12.2"
-val mockWebServerVersion = "4.12.0"
+val mockWebServerVersion = "5.2.1"
 
 plugins {
     id("org.jetbrains.kotlin.jvm") version "2.1.20"
